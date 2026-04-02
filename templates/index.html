@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resume Optimizer</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f8;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .result-box {
+            background: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🚀 Resume Optimizer</h1>
+
+    <form method="POST">
+        <textarea name="resume" placeholder="Paste your resume here" rows="8"></textarea>
+        <textarea name="job" placeholder="Paste job description here" rows="6"></textarea>
+        <button type="submit">Optimize</button>
+    </form>
+
+    {% if result %}
+    <div class="result-box">
+        {{ result }}
+    </div>
+    {% endif %}
+
+</body>
+</html>
