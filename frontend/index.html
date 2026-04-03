@@ -1,347 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>CareerCraft AI</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
-<style>
-:root{--ink:#1a1a1a;--ink2:#444;--ink3:#888;--paper:#faf9f7;--cream:#f2efe9;--gold:#c9a84c;--gold-light:#f5e9ca;--border:#e2ddd5;--white:#fff;--green:#2d6a4f;--green-bg:#d8f3dc;--red-bg:#ffe8e8;--red:#c0392b;--blue:#1a4a7a;--blue-bg:#e8f0fa;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
-header{background:var(--ink);padding:22px 40px;display:flex;align-items:center;justify-content:space-between;}
-.logo{font-family:'Playfair Display',serif;font-size:22px;color:var(--gold);}
-.logo span{color:#fff;font-weight:300;font-size:12px;display:block;margin-top:2px;letter-spacing:.15em;text-transform:uppercase;font-family:'DM Sans',sans-serif;}
-.badge{background:var(--gold);color:var(--ink);font-size:10px;font-weight:500;padding:4px 12px;border-radius:20px;letter-spacing:.1em;text-transform:uppercase;}
-.container{max-width:1100px;margin:0 auto;padding:36px 24px;}
-.tagline{text-align:center;margin-bottom:32px;}
-.tagline h1{font-family:'Playfair Display',serif;font-size:28px;font-weight:600;margin-bottom:8px;}
-.tagline p{font-size:14px;color:var(--ink3);max-width:480px;margin:0 auto;line-height:1.7;}
-.notice{background:#fff8e8;border:1px solid #f0d080;border-radius:12px;padding:14px 18px;font-size:13px;color:#7a5c10;margin-bottom:24px;line-height:1.6;}
-.notice strong{display:block;margin-bottom:4px;}
-.input-panel{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:28px;}
-.panel-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--cream);}
-.tab-btn{flex:1;padding:13px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;border:none;background:transparent;cursor:pointer;color:var(--ink3);border-bottom:2px solid transparent;transition:all .2s;}
-.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);background:var(--white);}
-.panel-body{padding:22px;}
-.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
-@media(max-width:680px){.input-grid{grid-template-columns:1fr;}}
-.field-group{display:flex;flex-direction:column;gap:7px;}
-.field-group label{font-size:11px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;}
-textarea{font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.6;color:var(--ink);background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:12px;resize:vertical;min-height:190px;transition:border-color .2s;}
-textarea:focus{outline:none;border-color:var(--gold);}
-textarea::placeholder{color:#bbb;font-size:12px;}
-.gen-row{display:flex;align-items:center;justify-content:space-between;margin-top:18px;flex-wrap:wrap;gap:10px;}
-.toggles{display:flex;gap:7px;flex-wrap:wrap;}
-.chip{padding:5px 13px;border:1px solid var(--border);border-radius:20px;font-size:12px;cursor:pointer;background:var(--white);color:var(--ink2);transition:all .2s;user-select:none;}
-.chip.on{background:var(--gold-light);border-color:var(--gold);color:#7a5c10;font-weight:500;}
-.gen-btn{background:var(--ink);color:#fff;border:none;padding:12px 26px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .2s;}
-.gen-btn:hover{background:#333;}
-.gen-btn:disabled{opacity:.5;cursor:not-allowed;}
-.spinner{width:15px;height:15px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;}
-.spinner.on{display:block;}
-@keyframes spin{to{transform:rotate(360deg)}}
-#output-area{display:none;}
-#output-area.on{display:block;}
-.out-tabs{display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap;}
-.out-tab{padding:7px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--ink2);transition:all .2s;}
-.out-tab.active{background:var(--ink);color:#fff;border-color:var(--ink);}
-.out-card{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
-.out-header{padding:16px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--cream);}
-.out-header h3{font-family:'Playfair Display',serif;font-size:16px;font-weight:500;}
-.copy-btn{background:transparent;border:1px solid var(--border);border-radius:8px;padding:5px 13px;font-size:12px;cursor:pointer;color:var(--ink2);font-family:'DM Sans',sans-serif;transition:all .15s;}
-.copy-btn:hover{background:var(--gold-light);border-color:var(--gold);color:#7a5c10;}
-.copy-btn.copied{background:var(--green-bg);border-color:var(--green);color:var(--green);}
-.out-content{padding:26px;font-size:14px;line-height:1.8;color:var(--ink2);white-space:pre-wrap;min-height:140px;}
-.out-content.muted{color:var(--ink3);font-style:italic;}
-.err-box{margin:22px;background:var(--red-bg);border:1px solid #f5c6c6;border-radius:10px;padding:16px 18px;color:var(--red);font-size:13px;line-height:1.7;}
-.err-box code{display:block;font-size:11px;background:#fff3f3;padding:6px 10px;border-radius:6px;margin:8px 0;font-family:monospace;word-break:break-all;}
-.retry-btn{margin-top:10px;background:var(--ink);color:#fff;border:none;padding:9px 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;}
-.match-wrap{padding:22px;}
-.score-row{display:flex;justify-content:space-between;font-size:13px;color:var(--ink3);margin-bottom:5px;}
-.score-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin-bottom:18px;}
-.score-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--gold),#e8b84b);transition:width 1s ease;}
-.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
-@media(max-width:560px){.match-grid{grid-template-columns:1fr;}}
-.mbox{border-radius:10px;padding:14px;}
-.mbox.g{background:var(--green-bg);border:1px solid #b7e4c7;}
-.mbox.r{background:var(--red-bg);border:1px solid #f5c6c6;}
-.mbox.b{background:var(--blue-bg);border:1px solid #c5d9f5;}
-.mbox h4{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
-.mbox.g h4{color:var(--green);}.mbox.r h4{color:var(--red);}.mbox.b h4{color:var(--blue);}
-.mbox ul{list-style:none;}.mbox li{font-size:13px;padding:2px 0;color:var(--ink2);display:flex;gap:5px;line-height:1.5;}
-.mbox li::before{content:'•';flex-shrink:0;}
-.mbox.g li::before{color:var(--green);}.mbox.r li::before{color:var(--red);}.mbox.b li::before{color:var(--blue);}
-.tips-list{list-style:none;padding:22px;}
-.tips-list li{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);align-items:flex-start;}
-.tips-list li:last-child{border-bottom:none;}
-.tip-n{width:26px;height:26px;flex-shrink:0;border-radius:50%;background:var(--gold-light);color:#7a5c10;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;}
-.tip-t{font-size:14px;color:var(--ink2);line-height:1.7;padding-top:3px;}
-</style>
+  <meta charset="UTF-8">
+  <title>CareerCraft AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 40px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+    }
+
+    .container {
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin: auto;
+    }
+
+    input, button {
+      margin-top: 15px;
+      padding: 10px;
+      width: 100%;
+      border-radius: 5px;
+      border: none;
+    }
+
+    button {
+      background: #3b82f6;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #2563eb;
+    }
+
+    #result {
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    #loading {
+      display: none;
+      margin-top: 15px;
+      color: yellow;
+    }
+  </style>
 </head>
+
 <body>
-<header>
-  <div class="logo">CareerCraft <span>AI-Powered Resume Service</span></div>
-  <div class="badge">Premium</div>
-</header>
-<div class="container">
-  <div class="tagline">
-    <h1>Turn Any Resume Into a Job Magnet</h1>
-    <p>Paste a resume, job description, or both — get client-ready deliverables in seconds.</p>
+
+  <h1>🚀 CareerCraft AI</h1>
+  <p>Upload your resume and get ATS score instantly</p>
+
+  <div class="container">
+
+    <form id="uploadForm">
+      <input type="file" id="resume" accept=".pdf,.doc,.docx" required>
+      <button type="submit">Analyze Resume</button>
+    </form>
+
+    <div id="loading">Analyzing...</div>
+
+    <div id="result"></div>
+
   </div>
 
-  <div class="notice">
-    <strong>⚠️ Important: Open this file correctly</strong>
-    This tool must be opened via a web server — not by double-clicking the file. 
-    The easiest way: drag this file into <strong>VS Code</strong> and use <strong>Live Server</strong>, 
-    or upload it to <strong>GitHub Pages / Netlify Drop</strong> (free). 
-    Opening as a local <code>file://</code> will block the AI calls due to browser security.
-  </div>
+  <!-- SCRIPT CONNECTION -->
+  <script src="script.js"></script>
 
-  <div class="input-panel">
-    <div class="panel-tabs">
-      <button class="tab-btn active" onclick="setMode('both')">Resume + Job Description</button>
-      <button class="tab-btn" onclick="setMode('resume')">Resume Only</button>
-      <button class="tab-btn" onclick="setMode('jd')">Job Description Only</button>
-    </div>
-    <div class="panel-body">
-      <div class="input-grid">
-        <div class="field-group" id="resume-field">
-          <label>Resume / CV</label>
-          <textarea id="resume-input" placeholder="Paste the candidate's resume here..."></textarea>
-        </div>
-        <div class="field-group" id="jd-field">
-          <label>Job Description</label>
-          <textarea id="jd-input" placeholder="Paste the job description here..."></textarea>
-        </div>
-      </div>
-      <div class="gen-row">
-        <div class="toggles">
-          <div class="chip on" data-key="resume"   onclick="toggleChip(this)">✦ Resume</div>
-          <div class="chip on" data-key="match"    onclick="toggleChip(this)">✦ Job Match</div>
-          <div class="chip on" data-key="cover"    onclick="toggleChip(this)">✦ Cover Letter</div>
-          <div class="chip on" data-key="linkedin" onclick="toggleChip(this)">✦ LinkedIn</div>
-          <div class="chip on" data-key="tips"     onclick="toggleChip(this)">✦ Tips</div>
-        </div>
-        <button class="gen-btn" id="gen-btn" onclick="generate()">
-          <div class="spinner" id="spinner"></div>
-          <span id="btn-label">Generate Deliverables</span>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div id="output-area">
-    <div class="out-tabs" id="out-tabs"></div>
-    <div class="out-card">
-      <div class="out-header">
-        <h3 id="active-title">Output</h3>
-        <button class="copy-btn" id="copy-btn" onclick="copyOutput()">Copy</button>
-      </div>
-      <div id="content-wrap"></div>
-    </div>
-  </div>
-</div>
-
-<script>
-var mode='both',activeTab=null,outputs={},errors={},generating={},lastR='',lastJ='';
-var enabled={resume:true,match:true,cover:true,linkedin:true,tips:true};
-var meta={
-  resume:{label:'Resume',title:'Professionally Rewritten Resume'},
-  match:{label:'Job Match',title:'Job Match Analysis'},
-  cover:{label:'Cover Letter',title:'Tailored Cover Letter'},
-  linkedin:{label:'LinkedIn',title:'LinkedIn Summary & Headline'},
-  tips:{label:'Tips',title:'Actionable Improvement Tips'}
-};
-var toks={resume:1200,match:600,cover:700,linkedin:300,tips:500};
-
-function makePrompt(key,r,j){
-  if(key==='resume') return 'You are a professional resume writer. Rewrite this resume with strong action verbs, ATS-friendly formatting, and measurable achievements. Output ONLY the finished resume.\n\nRESUME:\n'+r+(j?'\n\nJOB DESCRIPTION:\n'+j:'');
-  if(key==='match')  return 'Analyse how well this resume matches the job description. Reply in EXACT format:\nMATCH_SCORE: [0-100]\nSTRONG_MATCHES:\n- item\nGAPS:\n- item\nSUGGESTIONS:\n- item\n\nRESUME:\n'+r+'\n\nJOB DESCRIPTION:\n'+j;
-  if(key==='cover')  return 'Write a tailored professional cover letter in 3 paragraphs. No placeholders. Output ONLY the letter.\n\nRESUME:\n'+r+(j?'\n\nJOB DESCRIPTION:\n'+j:'');
-  if(key==='linkedin') return 'Write:\nHEADLINE: [punchy, max 12 words]\nABOUT: [3-4 sentences, first person, recruiter-friendly]\n\nRESUME:\n'+r;
-  if(key==='tips') return 'Give exactly 5 numbered actionable job-search tips for this candidate.\n\nRESUME:\n'+r+(j?'\n\nJOB DESCRIPTION:\n'+j:'');
-}
-
-async function callAPI(key,r,j){
-  try{
-    var resp=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:toks[key]||800,messages:[{role:'user',content:makePrompt(key,r,j)}]})
-    });
-    var raw=await resp.text();
-    if(!resp.ok){
-      var msg='HTTP '+resp.status;
-      try{var e=JSON.parse(raw);msg=(e.error&&e.error.message)||msg;}catch(x){}
-      return{ok:false,error:msg};
-    }
-    var data=JSON.parse(raw);
-    if(data.error)return{ok:false,error:data.error.message||'API error'};
-    var txt='';
-    if(data.content&&Array.isArray(data.content))data.content.forEach(function(b){if(b.type==='text')txt+=b.text;});
-    if(!txt)return{ok:false,error:'Empty response (stop_reason: '+(data.stop_reason||'unknown')+')'};
-    return{ok:true,text:txt};
-  }catch(e){
-    return{ok:false,error:e.message||'Network error — ensure this page is served over HTTPS, not opened as a local file.'};
-  }
-}
-
-function setMode(m){
-  mode=m;
-  document.querySelectorAll('.tab-btn').forEach(function(b,i){b.classList.toggle('active',['both','resume','jd'][i]===m);});
-  document.getElementById('resume-field').style.display=(m==='jd')?'none':'';
-  document.getElementById('jd-field').style.display=(m==='resume')?'none':'';
-  var mc=document.querySelector('[data-key="match"]');
-  if(mc){enabled.match=(m!=='resume');mc.classList.toggle('on',enabled.match);}
-}
-function toggleChip(el){var k=el.dataset.key;enabled[k]=!enabled[k];el.classList.toggle('on',enabled[k]);}
-
-function buildTabs(keys){
-  var el=document.getElementById('out-tabs');el.innerHTML='';
-  keys.forEach(function(k){
-    var b=document.createElement('button');
-    b.id='tab-'+k;b.className='out-tab'+(k===activeTab?' active':'');
-    b.innerHTML=meta[k].label+' <span id="ts-'+k+'" style="font-size:10px;opacity:.65;margin-left:2px;">⏳</span>';
-    b.onclick=function(){switchTab(k);};
-    el.appendChild(b);
-  });
-}
-function setTS(k,s){var e=document.getElementById('ts-'+k);if(e)e.textContent=s;}
-
-function switchTab(key){
-  activeTab=key;
-  document.querySelectorAll('.out-tab').forEach(function(t){t.classList.toggle('active',t.id==='tab-'+key);});
-  document.getElementById('active-title').textContent=meta[key]?meta[key].title:key;
-  var cb=document.getElementById('copy-btn');cb.textContent='Copy';cb.className='copy-btn';
-  renderTab(key);
-}
-
-function renderTab(key){
-  var w=document.getElementById('content-wrap');
-  if(generating[key]){w.innerHTML='<div class="out-content muted">⏳ Generating '+meta[key].label+'…</div>';return;}
-  if(errors[key]){
-    w.innerHTML='<div class="err-box"><strong>⚠ Failed: '+meta[key].label+'</strong><code>'+esc(errors[key])+'</code>'
-      +'<button class="retry-btn" onclick="retrySingle(\''+key+'\')">↺ Retry</button></div>';
-    return;
-  }
-  var txt=(outputs[key]||'').trim();
-  if(!txt){w.innerHTML='<div class="out-content muted">Queued…</div>';return;}
-  if(key==='match'){renderMatch(w,txt);return;}
-  if(key==='tips'){renderTips(w,txt);return;}
-  w.innerHTML='<div class="out-content">'+esc(txt)+'</div>';
-}
-
-function renderMatch(w,text){
-  var sm=text.match(/MATCH_SCORE:\s*(\d+)/i);
-  var score=sm?parseInt(sm[1]):70;
-  var col=score>=75?'#2d6a4f':score>=50?'#c9a84c':'#c0392b';
-  function lst(pat){var m=text.match(pat);if(!m)return[];return m[1].trim().split('\n').map(function(l){return l.trim().replace(/^[-*•]\s*/,'');}).filter(Boolean);}
-  var s=lst(/STRONG_MATCHES?:([\s\S]*?)(?=GAPS:|SUGGESTIONS:|$)/i);
-  var g=lst(/GAPS?:([\s\S]*?)(?=SUGGESTIONS:|$)/i);
-  var u=lst(/SUGGESTIONS?:([\s\S]*?)$/i);
-  w.innerHTML='<div class="match-wrap">'
-    +'<div class="score-row"><span>Match Score</span><span style="font-weight:600;color:'+col+'">'+score+'%</span></div>'
-    +'<div class="score-bar"><div class="score-fill" id="sf" style="width:0%"></div></div>'
-    +'<div class="match-grid"><div class="mbox g"><h4>Strong Matches</h4><ul>'+s.map(function(x){return'<li>'+esc(x)+'</li>';}).join('')+'</ul></div>'
-    +'<div class="mbox r"><h4>Gaps</h4><ul>'+g.map(function(x){return'<li>'+esc(x)+'</li>';}).join('')+'</ul></div></div>'
-    +'<div class="mbox b"><h4>Suggestions</h4><ul>'+u.map(function(x){return'<li>'+esc(x)+'</li>';}).join('')+'</ul></div></div>';
-  setTimeout(function(){var f=document.getElementById('sf');if(f)f.style.width=score+'%';},80);
-}
-
-function renderTips(w,text){
-  var lines=text.split('\n').filter(function(l){return l.trim();});
-  var tips=[],cur='';
-  lines.forEach(function(l){if(/^\d+[\.\)]/.test(l.trim())){if(cur)tips.push(cur);cur=l.trim().replace(/^\d+[\.\)]\s*/,'');}else{cur+=(cur?' ':'')+l.trim();}});
-  if(cur)tips.push(cur);if(!tips.length)tips=[text];
-  w.innerHTML='<ul class="tips-list">'+tips.map(function(t,i){return'<li><div class="tip-n">'+(i+1)+'</div><div class="tip-t">'+esc(t)+'</div></li>';}).join('')+'</ul>';
-}
-
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function copyOutput(){
-  var txt=outputs[activeTab]||'';if(!txt)return;
-  navigator.clipboard.writeText(txt).then(function(){
-    var b=document.getElementById('copy-btn');b.textContent='Copied!';b.className='copy-btn copied';
-    setTimeout(function(){b.textContent='Copy';b.className='copy-btn';},2000);
-  });
-}
-
-async function generate(){
-  var r=document.getElementById('resume-input').value.trim();
-  var j=document.getElementById('jd-input').value.trim();
-  if(!r&&!j){alert('Please paste at least a resume or job description.');return;}
-  lastR=r;lastJ=j;outputs={};errors={};generating={};
-  var keys=['resume','match','cover','linkedin','tips'].filter(function(k){
-    if(!enabled[k])return false;
-    if(k==='match'&&(!r||!j))return false;
-    return true;
-  });
-  if(!keys.length){alert('Please enable at least one output.');return;}
-  var btn=document.getElementById('gen-btn'),sp=document.getElementById('spinner'),lbl=document.getElementById('btn-label');
-  btn.disabled=true;sp.classList.add('on');
-  document.getElementById('output-area').className='on';
-  activeTab=keys[0];buildTabs(keys);switchTab(keys[0]);
-  for(var i=0;i<keys.length;i++){
-    var key=keys[i];
-    generating[key]=true;
-    lbl.textContent='('+(i+1)+'/'+keys.length+') '+meta[key].label+'…';
-    setTS(key,'⏳');
-    if(activeTab===key)renderTab(key);
-    var res=await callAPI(key,r,j);
-    generating[key]=false;
-    if(res.ok){outputs[key]=res.text;errors[key]=null;setTS(key,'✓');}
-    else{outputs[key]='';errors[key]=res.error;setTS(key,'✗');}
-    if(activeTab===key)renderTab(key);
-  }
-  btn.disabled=false;sp.classList.remove('on');lbl.textContent='Generate Deliverables';
-}
-
-async function retrySingle(key){
-  outputs[key]='';errors[key]=null;generating[key]=true;
-  setTS(key,'⏳');renderTab(key);
-  var res=await callAPI(key,lastR,lastJ);
-  generating[key]=false;
-  if(res.ok){outputs[key]=res.text;errors[key]=null;setTS(key,'✓');}
-  else{outputs[key]='';errors[key]=res.error;setTS(key,'✗');}
-  if(activeTab===key)renderTab(key);
-}
-async function testAPI(){
-  var tr = document.getElementById('test-result');
-  tr.textContent = '⏳ Testing…';
-  tr.style.color = '#888';
-  document.getElementById('dbg-body').classList.add('on');
-  document.getElementById('dbg-toggle').textContent = '▼ Hide debug log';
-  dbg('=== API TEST START ===');
-  try {
-    var resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 20,
-        messages: [{ role: 'user', content: 'Reply with just the word WORKING' }]
-      })
-    });
-    dbg('HTTP status: ' + resp.status);
-    var raw = await resp.text();
-    dbg('Raw response: ' + raw.slice(0, 500));
-    if (resp.ok) {
-      var d = JSON.parse(raw);
-      var txt = d.content && d.content[0] && d.content[0].text;
-      dbg('Extracted text: ' + txt);
-      tr.textContent = '✓ API working! Got: ' + txt;
-      tr.style.color = '#2d6a4f';
-    } else {
-      tr.textContent = '✗ HTTP ' + resp.status + ' — see debug log';
-      tr.style.color = '#c0392b';
-    }
-  } catch(e) {
-    dbg('EXCEPTION: ' + e.message + ' | ' + e.name);
-    tr.textContent = '✗ ' + e.message;
-    tr.style.color = '#c0392b';
-  }
-  dbg('=== API TEST END ===');
-}
-</script>
 </body>
 </html>
