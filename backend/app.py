@@ -1,86 +1,35 @@
-from flask import Flask, render_template, request
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # allow frontend to connect
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    result = None
+@app.route("/")
+def home():
+    return "CareerCraft AI Backend Running 🚀"
 
-    if request.method == 'POST':
-        resume = request.form.get('resume')
-        job = request.form.get('job')
+@app.route("/analyze", methods=["POST"])
+def analyze():
+    try:
+        file = request.files.get("resume")
 
-        # Safety handling
-        resume = resume if resume else ""
-        job = job if job else ""
+        if not file:
+            return jsonify({"error": "No file uploaded"}), 400
 
-        # Basic analysis
-        word_count = len(resume.split())
-        score = 60
+        # Dummy analysis (for now)
+        return jsonify({
+            "score": 75,
+            "missing_keywords": ["Python", "SQL"],
+            "suggestions": [
+                "Add measurable achievements",
+                "Improve summary section",
+                "Include more relevant skills"
+            ]
+        })
 
-        if word_count > 200:
-            score += 20
-        else:
-            score -= 10
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-        if job:
-            score += 10
 
-        # Preview snippets
-        resume_preview = resume[:200] if resume else "No resume provided"
-        job_preview = job[:150] if job else "No job description provided"
-
-        # FINAL OUTPUT WITH CLEAR CTA
-        result = f"""
-🚀 RESUME ANALYSIS REPORT
-
------------------------------------
-
-📊 BASIC METRICS
-
-• Word Count: {word_count}  
-• Resume Score: {score}/100  
-
------------------------------------
-
-📄 RESUME PREVIEW
-
-"{resume_preview}..."
-
------------------------------------
-
-🎯 JOB CONTEXT
-
-"{job_preview}..."
-
------------------------------------
-
-📈 KEY INSIGHTS
-
-• Improve bullet points with action verbs  
-• Add measurable achievements (numbers/results)  
-• Align keywords with job description  
-• Improve formatting for ATS systems  
-
------------------------------------
-
-🔒 FULL OPTIMIZATION INCLUDES:
-
-✔ ATS-optimized resume rewrite  
-✔ Tailored cover letter  
-✔ LinkedIn profile summary  
-✔ Job-specific keyword optimization  
-✔ Detailed improvement suggestions  
-
------------------------------------
-
-👉 PLACE YOUR ORDER ON FIVERR TO GET FULL OPTIMIZED VERSION
-
-🚀 Let’s help you get shortlisted faster!
-"""
-
-    return render_template('index.html', result=result)
-
-if __name__ == '__main__':
-    print("🚀 Starting Flask app...")
+if __name__ == "__main__":
     app.run(debug=True)
